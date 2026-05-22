@@ -1,0 +1,29 @@
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        if sum(nums) % 2 == 1: 
+            return False
+
+        self.target = sum(nums) / 2
+        self.mem = {}
+
+        return self.dfs(nums, 0, 0)
+
+    def dfs(self, nums, idx, total):
+        if (idx, total) in self.mem:
+            return self.mem[(idx, total)]
+
+        if total == self.target:
+            self.mem[(idx, total)] = True
+            return self.mem[(idx, total)]
+        
+        if total > self.target or idx >= len(nums):
+            return False
+
+        res = False
+ 
+        res = res or self.dfs(nums, idx + 1, total + nums[idx])
+        res = res or self.dfs(nums, idx + 1, total)
+
+        self.mem[(idx, total)] = res
+        return self.mem[(idx, total)]
+        
